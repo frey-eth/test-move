@@ -2,40 +2,59 @@
 # This file should be checked in.
 
 [move]
-version = 4
+version = 3
+manifest_digest = "9532BBD3FB62CB94DE36CC06B51A294088A83A33ED428FC821DD9666A28BEE44"
+deps_digest = "3C4103934B1E040BB6B23F1D610B4EF9F2F1166A50A104EADCF77467C004C600"
+dependencies = [
+  { id = "Sui", name = "Sui" },
+  { id = "flowx_clmm", name = "flowx_clmm" },
+]
+
+[[move.package]]
+id = "MoveStdlib"
+source = { git = "https://github.com/MystenLabs/sui.git", rev = "mainnet-v1.34.2", subdir = "crates/sui-framework/packages/move-stdlib" }
+
+[[move.package]]
+id = "Sui"
+source = { git = "https://github.com/MystenLabs/sui.git", rev = "mainnet-v1.34.2", subdir = "crates/sui-framework/packages/sui-framework" }
+
+dependencies = [
+  { id = "MoveStdlib", name = "MoveStdlib" },
+]
 
 [pinned.testnet.MoveStdlib]
-source = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/move-stdlib", rev = "caeb21b13ef6e26cd8c5e48be520bcf0598d48c3" }
+source = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/move-stdlib", rev = "8532f4611bd1ae744fcec105600df0df210dbb30" }
 use_environment = "testnet"
 manifest_digest = "C4FE4C91DE74CBF223B2E380AE40F592177D21870DC2D7EB6227D2D694E05363"
 deps = {}
 
-[pinned.testnet.MoveStdlib_1]
-source = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/move-stdlib", rev = "04dd28d5c5d92bff685ddfecb86f8acce18ce6df" }
-use_environment = "testnet"
-manifest_digest = "C4FE4C91DE74CBF223B2E380AE40F592177D21870DC2D7EB6227D2D694E05363"
-deps = {}
+[[move.package]]
+id = "flowx_clmm"
+source = { git = "https://github.com/dawnn07/clmm-contracts.git", rev = "main", subdir = "" }
+
+dependencies = [
+  { id = "Sui", name = "Sui" },
+]
+
+[move.toolchain-version]
+compiler-version = "1.60.0"
+edition = "2024"
+flavor = "sui"
 
 [pinned.testnet.Sui]
-source = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "caeb21b13ef6e26cd8c5e48be520bcf0598d48c3" }
+source = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "8532f4611bd1ae744fcec105600df0df210dbb30" }
 use_environment = "testnet"
 manifest_digest = "7AFB66695545775FBFBB2D3078ADFD084244D5002392E837FDE21D9EA1C6D01C"
 deps = { MoveStdlib = "MoveStdlib" }
 
-[pinned.testnet.Sui_1]
-source = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "04dd28d5c5d92bff685ddfecb86f8acce18ce6df" }
-use_environment = "testnet"
-manifest_digest = "7AFB66695545775FBFBB2D3078ADFD084244D5002392E837FDE21D9EA1C6D01C"
-deps = { MoveStdlib = "MoveStdlib_1" }
-
 [pinned.testnet.flowx_clmm]
-source = { git = "https://github.com/FlowX-Finance/clmm-contracts.git", subdir = ".", rev = "040cfd34b4b91687754563b63c8be3b9386f35a6" }
+source = { git = "https://github.com/dawnn07/clmm-contracts.git", subdir = ".", rev = "4dac664f50733aea826ff7479abbbb6b032f5db9" }
 use_environment = "testnet"
-manifest_digest = "C2772B976EC6A56C32071C116C869B6B810C731713A3E79642606E99AE1F55DA"
-deps = { Sui = "Sui_1" }
+manifest_digest = "50E473B0F672EBE291E0F499B438B1BED79235AE0C812C71E0B3E7FB1FE7D2CC"
+deps = { Sui = "Sui" }
 
 [pinned.testnet.migrate_fun_sui]
 source = { root = true }
 use_environment = "testnet"
-manifest_digest = "0BD0B84E37DC5C3451FC243FE3A1B056ADFB4208AF21328B2A1B965DC21E8E92"
+manifest_digest = "CB7113A9C6827278AE6AF63587FE4D7187330531F9DC32B26D5E5141998A28C0"
 deps = { Sui = "Sui", flowx_clmm = "flowx_clmm" }
