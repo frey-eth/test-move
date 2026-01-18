@@ -58,6 +58,14 @@ module migrate_fun_sui::vault {
         balance::split(&mut vault.old_token_balance, amount)
     }
 
+    /// Allows depositing OldToken (e.g. from user migration).
+    public(package) fun deposit_old<OldToken>(
+        vault: &mut Vault<OldToken>,
+        coins: Coin<OldToken>
+    ) {
+        balance::join(&mut vault.old_token_balance, coin::into_balance(coins));
+    }
+
     public fun is_locked<OldToken>(vault: &Vault<OldToken>): bool {
         vault.locked
     }

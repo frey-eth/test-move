@@ -2,7 +2,7 @@
 compiled_package_info:
   package_name: migrate_fun_sui
   build_flags:
-    test_mode: true
+    test_mode: false
     generate_docs: false
     save_disassembly: false
     install_dir: ~
@@ -20,7 +20,7 @@ compiled_package_info:
     modes: []
     force_lock_file: false
     root_as_zero: false
-    environment: testnet
+    environment: ~
     set_unpublished_deps_to_zero: false
 dependencies:
   - MoveStdlib

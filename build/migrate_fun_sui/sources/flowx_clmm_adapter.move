@@ -1,4 +1,3 @@
-
 module migrate_fun_sui::flowx_clmm_adapter {
     use sui::coin::{Self, Coin};
     use sui::clock::{Clock};
@@ -10,8 +9,9 @@ module migrate_fun_sui::flowx_clmm_adapter {
     use flowx_clmm::pool_manager::{Self, PoolRegistry};
     use flowx_clmm::versioned::{Versioned};
     use flowx_clmm::position_manager::{Self, PositionRegistry};
-    use flowx_clmm::utils;
     use flowx_clmm::i32;
+    use flowx_clmm::utils;
+    use flowx_clmm::swap_router;
 
     // --- Reader Functions ---
 
@@ -58,8 +58,6 @@ module migrate_fun_sui::flowx_clmm_adapter {
     }
     
     /// Add Liquidity to a pool.
-    /// Orchestrates open_position and increase_liquidity.
-    /// Transfers the Position object to the sender.
     public fun add_liquidity<X, Y>(
         position_registry: &mut PositionRegistry,
         pool_registry: &mut PoolRegistry,
@@ -72,17 +70,14 @@ module migrate_fun_sui::flowx_clmm_adapter {
         clock: &Clock,
         ctx: &mut TxContext
     ) {
-        let _amount_x = coin::value(&coin_x); // Unused vars usually prefixed
+        let _amount_x = coin::value(&coin_x); 
         let _amount_y = coin::value(&coin_y);
         
-        // Convert u32 ticks to I32. Assumes positive ticks for simplicity.
-        // If ticks are conceptually negative, caller must handle it, 
-        // but since input is u32, we treat it as positive index or raw.
+        // Convert u32 ticks to I32.
         let lower = i32::from(tick_lower);
         let upper = i32::from(tick_upper);
 
         // 1. Open Position
-        // Note: open_position transfers the object to sender? No, it returns Position.
         let mut position = position_manager::open_position<X, Y>(
             position_registry,
             pool_registry,
@@ -109,5 +104,30 @@ module migrate_fun_sui::flowx_clmm_adapter {
 
         // 3. Transfer Position to Sender (Admin/Protocol)
         transfer::public_transfer(position, tx_context::sender(ctx));
+    }
+
+    /// Swap X -> Y. Returns Coin<Y>.
+    /// Wraps `swap_router::swap_exact_input`.
+    /// Note: Remainder Coin<X> is refunded to sender by FlowX Router.
+    public fun swap_exact_input<X, Y>(
+        pool_registry: &mut PoolRegistry,
+        fee_rate: u64, 
+        coin_in: Coin<X>,
+        amount_out_min: u64,
+        versioned: &Versioned,
+        clock: &Clock,
+        ctx: &mut TxContext
+    ): Coin<Y> {
+        swap_router::swap_exact_input<X, Y>(
+            pool_registry,
+            fee_rate,
+            coin_in,
+            amount_out_min,
+            0, // sqrt_price_limit (0 = standard/unlimited)
+            sui::clock::timestamp_ms(clock) + 60000, // deadline: +1 min
+            versioned,
+            clock,
+            ctx
+        )
     }
 }
