@@ -1,11 +1,12 @@
 [package]
 name = "migrate_fun_sui"
 version = "0.0.1"
+
 edition = "2024.beta" # Using beta edition for latest features
 
 [dependencies]
-Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet", override = true }
-flowx_clmm = { local = "../flowx-clmm" }
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "mainnet-v1.34.2" }
+flowx_clmm = { git = "https://github.com/dawnn07/clmm-contracts.git", rev = "main" }
 
 [addresses]
 migrate_fun_sui = "0x0"

@@ -26,43 +26,22 @@
 ///    }
 /// }
 /// ```
-module sui::event;
+module sui::event {
+    /// Emit a custom Move event, sending the data offchain.
+    ///
+    /// Used for creating custom indexes and tracking onchain
+    /// activity in a way that suits a specific application the most.
+    ///
+    /// The type `T` is the main way to index the event, and can contain
+    /// phantom parameters, eg `emit(MyEvent<phantom T>)`.
+    public native fun emit<T: copy + drop>(event: T);
 
-use std::type_name;
-use sui::accumulator;
-use sui::accumulator_settlement::EventStreamHead;
+    #[test_only]
+    /// Get the total number of events emitted during execution so far
+    public native fun num_events(): u32;
 
-/// Emit a custom Move event, sending the data offchain.
-///
-/// Used for creating custom indexes and tracking onchain
-/// activity in a way that suits a specific application the most.
-///
-/// The type `T` is the main way to index the event, and can contain
-/// phantom parameters, eg `emit(MyEvent<phantom T>)`.
-public native fun emit<T: copy + drop>(event: T);
-
-/// Emits a custom Move event which can be authenticated by a light client.
-///
-/// This method emits the authenticated event to the event stream for the Move package that
-/// defines the event type `T`.
-/// Only the package that defines the type `T` can emit authenticated events to this stream.
-public fun emit_authenticated<T: copy + drop>(event: T) {
-    let stream_id = type_name::original_id<T>();
-    let accumulator_addr = accumulator::accumulator_address<EventStreamHead>(stream_id);
-    emit_authenticated_impl<EventStreamHead, T>(accumulator_addr, stream_id, event);
+    #[test_only]
+    /// Get all events of type `T` emitted during execution.
+    /// Can only be used in testing,
+    public native fun events_by_type<T: copy + drop>(): vector<T>;
 }
-
-native fun emit_authenticated_impl<StreamHeadT, T: copy + drop>(
-    accumulator_id: address,
-    stream: address,
-    event: T,
-);
-
-#[test_only]
-/// Get the total number of events emitted during execution so far
-public native fun num_events(): u32;
-
-#[test_only]
-/// Get all events of type `T` emitted during execution.
-/// Can only be used in testing,
-public native fun events_by_type<T: copy + drop>(): vector<T>;

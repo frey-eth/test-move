@@ -1,21 +1,22 @@
 module migrate_fun_sui::mock_token {
     use sui::coin::{Self, Coin, TreasuryCap};
-    use sui::url;
+
+
 
     public struct MOCK_TOKEN has drop {}
 
     fun init(witness: MOCK_TOKEN, ctx: &mut TxContext) {
         let (treasury, metadata) = coin::create_currency(
-            witness, 
-            9, 
-            b"OLD", 
-            b"Old Token", 
-            b"Mock Old Token for Migration", 
-            option::none(), 
+            witness,
+            9,
+            b"OLD",
+            b"Old Token",
+            b"Mock Old Token for Migration",
+            option::none(),
             ctx
         );
         transfer::public_freeze_object(metadata);
-        transfer::public_transfer(treasury, tx_context::sender(ctx)); 
+        transfer::public_transfer(treasury, tx_context::sender(ctx));
     }
 
     #[test_only]
@@ -24,8 +25,8 @@ module migrate_fun_sui::mock_token {
     }
 
     public fun mint(
-        treasury: &mut TreasuryCap<MOCK_TOKEN>, 
-        amount: u64, 
+        treasury: &mut TreasuryCap<MOCK_TOKEN>,
+        amount: u64,
         ctx: &mut TxContext
     ): Coin<MOCK_TOKEN> {
         coin::mint(treasury, amount, ctx)

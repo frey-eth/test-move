@@ -1,5 +1,5 @@
 module migrate_fun_sui::events {
-    use sui::object::{ID};
+
     use sui::event;
     use std::ascii::{String};
 

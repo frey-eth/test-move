@@ -47,9 +47,9 @@ module flowx_clmm::position {
     fun init(otw: POSITION, ctx: &mut TxContext) {
         let publisher = package::claim(otw, ctx);
         let display = display::new<Position>(&publisher, ctx);
-        display::add(&mut display, utf8(b"name"), utf8(b"Flowx Position's NFT"));
-        display::add(&mut display, utf8(b"description"), utf8(b"Flowx Position's NFT"));
-        display::add(&mut display, utf8(b"image_url"), utf8(b""));
+        display::add(&mut display, utf8(b"name"), utf8(b"FlowX CLMM Liquidity Positions"));
+        display::add(&mut display, utf8(b"description"), utf8(b"This NFT represents a liquidity position in FlowX CLMM. The owner of this NFT can modify or redeem the position."));
+        display::add(&mut display, utf8(b"image_url"), utf8(b"https://ipfs.io/ipfs/QmV3S91uDAPJAcqMNed3R6JyAXKnbidgNdHGhnwU5LyUDZ"));
         display::update_version(&mut display);
 
         transfer::public_transfer(display, tx_context::sender(ctx));
@@ -181,6 +181,13 @@ module flowx_clmm::position {
         reward_info.coins_owed_reward = reward_info.coins_owed_reward - amount;
     }
 
+    /// Update a position with new liquidity and collect accrued fees and rewards
+    /// This function calculates and accumulates fees and rewards that have accrued since the last update
+    /// @param self The position object to update
+    /// @param liquidity_delta The change in liquidity (positive for increase, negative for decrease)
+    /// @param fee_growth_inside_x The current fee growth inside the position range for coin X
+    /// @param fee_growth_inside_y The current fee growth inside the position range for coin Y
+    /// @param reward_growths_inside Vector of current reward growths inside the position range for each reward token
     public(friend) fun update(
         self: &mut Position,
         liquidity_delta: I128,
@@ -214,7 +221,7 @@ module flowx_clmm::position {
 
         if (
             !full_math_u64::add_check(self.coins_owed_x, (coins_owed_x as u64)) ||
-            !full_math_u64::add_check(self.coins_owed_x, (coins_owed_x as u64))
+            !full_math_u64::add_check(self.coins_owed_y, (coins_owed_y as u64))
         ) {
             abort E_COINS_OWED_OVERFLOW
         };
@@ -227,6 +234,10 @@ module flowx_clmm::position {
         self.coins_owed_y = self.coins_owed_y + (coins_owed_y as u64);
     }
 
+    /// Update the reward information for a position based on the current reward growths inside the position range
+    /// This function calculates the coins owed for each reward based on the current reward growths and the position's liquidity
+    /// @param self The position object to update
+    /// @param reward_growths_inside Vector of current reward growths inside the position range for each reward token
     fun update_reward_infos(
         self: &mut Position,
         reward_growths_inside: vector<u128>
