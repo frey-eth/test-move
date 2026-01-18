@@ -1,0 +1,481 @@
+[NOTE] Dependencies on Sui, MoveStdlib, Bridge, DeepBook, and SuiSystem are automatically added, but this feature is disabled for your package because you have explicitly included dependencies on Sui. Consider removing these dependencies from `Move.toml`.
+INCLUDING DEPENDENCY MoveStdlib
+INCLUDING DEPENDENCY Sui
+INCLUDING DEPENDENCY flowx_clmm
+BUILDING migrate_fun_sui
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/migration.move:2:23
+  [0m[34m│[0m
+[0m[34m2[0m [0m[34m│[0m     use sui::object::{[0m[33mSelf[0m, UID};
+  [0m[34m│[0m                       [0m[33m^^^^[0m [0m[33mUnnecessary alias 'object' for module 'sui::object'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/migration.move:2:29
+  [0m[34m│[0m
+[0m[34m2[0m [0m[34m│[0m     use sui::object::{Self, [0m[33mUID[0m};
+  [0m[34m│[0m                             [0m[33m^^^[0m [0m[33mUnnecessary alias 'UID' for module member 'sui::object::UID'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/migration.move:3:27
+  [0m[34m│[0m
+[0m[34m3[0m [0m[34m│[0m     use sui::tx_context::{[0m[33mSelf[0m, TxContext};
+  [0m[34m│[0m                           [0m[33m^^^^[0m [0m[33mUnnecessary alias 'tx_context' for module 'sui::tx_context'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/migration.move:3:33
+  [0m[34m│[0m
+[0m[34m3[0m [0m[34m│[0m     use sui::tx_context::{Self, [0m[33mTxContext[0m};
+  [0m[34m│[0m                                 [0m[33m^^^^^^^^^[0m [0m[33mUnnecessary alias 'TxContext' for module member 'sui::tx_context::TxContext'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/migration.move:6:14
+  [0m[34m│[0m
+[0m[34m6[0m [0m[34m│[0m     use sui::[0m[33mtransfer[0m;
+  [0m[34m│[0m              [0m[33m^^^^^^^^[0m [0m[33mUnnecessary alias 'transfer' for module 'sui::transfer'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+   [0m[34m┌─[0m ./sources/migration.move:43:9
+   [0m[34m│[0m
+[0m[34m43[0m [0m[34m│[0m         [0m[33mmigrated_amount[0m: u64
+   [0m[34m│[0m         [0m[33m^^^^^^^^^^^^^^^[0m [0m[33mThe 'migrated_amount' field of the 'UserMigration' type is unused[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a `public` function[0m
+   [0m[34m┌─[0m ./sources/migration.move:48:12
+   [0m[34m│[0m
+[0m[34m48[0m [0m[34m│[0m     public [0m[33mentry[0m fun initialize_migration<OldToken, NewToken>(
+   [0m[34m│[0m            [0m[33m^^^^^[0m [0m[33m`entry` on `public` functions limits composability as it adds restrictions, e.g. the type of each return value must have `drop`. `entry` on `public` is only meaningful in niche scenarios.[0m
+   [0m[34m│[0m
+   [0m[34m=[0m `public` functions can be called from PTBs. `entry` can be used to allow non-`public` functions to be called from PTBs, but it adds restrictions on the usage of input arguments and on the type of return values. Unless this `public` function interacts with an intricate set of other `entry` functions, the `entry` modifier should be removed.
+   [0m[34m=[0m This warning can be suppressed with '#[allow(lint(public_entry))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;9merror[Sui E02008][0m[1m: invalid event[0m
+   [0m[34m┌─[0m ./sources/migration.move:73:9
+   [0m[34m│[0m    
+[0m[34m73[0m [0m[34m│[0m [0m[31m╭[0m           [0m[31mevent::emit(events::MigrationInitialized {[0m
+   [0m[34m│[0m [0m[31m│[0m [0m[34m╭[0m[0m[34m─────────────────────'[0m
+[0m[34m74[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            migration_id: object::id(&config),[0m
+[0m[34m75[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            old_token: std::type_name::get_with_original_ids<OldToken>().into_string(),[0m
+[0m[34m76[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            new_token: std::type_name::get_with_original_ids<NewToken>().into_string(),[0m
+[0m[34m77[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            ratio: (ratio as u64),[0m
+[0m[34m78[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            start_time: sui::clock::timestamp_ms(clock)[0m
+[0m[34m79[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m        })[0m;
+   [0m[34m│[0m [0m[31m╰[0m[0m[31m─[0m[0m[34m│[0m[0m[31m──────────^ Invalid event. The function 'sui::event::emit' must be called with a type defined in the current module[0m
+   [0m[34m│[0m   [0m[34m╰[0m[0m[34m─────────' The type 'migrate_fun_sui::events::MigrationInitialized' is not declared in the current module[0m
+
+[0m[1m[38;5;9merror[E04001][0m[1m: restricted visibility[0m
+   [0m[34m┌─[0m ./sources/migration.move:73:21
+   [0m[34m│[0m  
+[0m[34m73[0m [0m[34m│[0m           event::emit([0m[31mevents::MigrationInitialized {[0m
+   [0m[34m│[0m [0m[31m╭[0m[0m[31m─────────────────────^[0m
+[0m[34m74[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            migration_id: object::id(&config),[0m
+[0m[34m75[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            old_token: std::type_name::get_with_original_ids<OldToken>().into_string(),[0m
+[0m[34m76[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            new_token: std::type_name::get_with_original_ids<NewToken>().into_string(),[0m
+[0m[34m77[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            ratio: (ratio as u64),[0m
+[0m[34m78[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            start_time: sui::clock::timestamp_ms(clock)[0m
+[0m[34m79[0m [0m[34m│[0m [0m[31m│[0m [0m[31m        }[0m);
+   [0m[34m│[0m [0m[31m╰[0m[0m[31m─────────^ Struct 'migrate_fun_sui::events::MigrationInitialized' can only be instantiated within its defining module 'migrate_fun_sui::events'[0m
+   [0m[34m│[0m  
+   [0m[34m┌─[0m ./sources/events.move:5:19
+   [0m[34m│[0m
+[0m[34m 5[0m [0m[34m│[0m     public struct MigrationInitialized has copy, drop {
+   [0m[34m│[0m                   [0m[34m--------------------[0m [0m[34mStruct defined in module 'migrate_fun_sui::events'[0m
+
+[0m[1m[38;5;11mwarning[W04037][0m[1m: deprecated usage[0m
+   [0m[34m┌─[0m ./sources/migration.move:75:40
+   [0m[34m│[0m
+[0m[34m75[0m [0m[34m│[0m             old_token: std::type_name::[0m[33mget_with_original_ids[0m<OldToken>().into_string(),
+   [0m[34m│[0m                                        [0m[33m^^^^^^^^^^^^^^^^^^^^^[0m [0m[33mThe function 'std::type_name::get_with_original_ids' is deprecated: Renamed to `with_original_ids` for clarity.[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(deprecated_usage)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W04037][0m[1m: deprecated usage[0m
+   [0m[34m┌─[0m ./sources/migration.move:76:40
+   [0m[34m│[0m
+[0m[34m76[0m [0m[34m│[0m             new_token: std::type_name::[0m[33mget_with_original_ids[0m<NewToken>().into_string(),
+   [0m[34m│[0m                                        [0m[33m^^^^^^^^^^^^^^^^^^^^^[0m [0m[33mThe function 'std::type_name::get_with_original_ids' is deprecated: Renamed to `with_original_ids` for clarity.[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(deprecated_usage)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a `public` function[0m
+   [0m[34m┌─[0m ./sources/migration.move:86:12
+   [0m[34m│[0m
+[0m[34m86[0m [0m[34m│[0m     public [0m[33mentry[0m fun lock_liquidity<OldToken, NewToken>(
+   [0m[34m│[0m            [0m[33m^^^^^[0m [0m[33m`entry` on `public` functions limits composability as it adds restrictions, e.g. the type of each return value must have `drop`. `entry` on `public` is only meaningful in niche scenarios.[0m
+   [0m[34m│[0m
+   [0m[34m=[0m `public` functions can be called from PTBs. `entry` can be used to allow non-`public` functions to be called from PTBs, but it adds restrictions on the usage of input arguments and on the type of return values. Unless this `public` function interacts with an intricate set of other `entry` functions, the `entry` modifier should be removed.
+   [0m[34m=[0m This warning can be suppressed with '#[allow(lint(public_entry))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;9merror[Sui E02008][0m[1m: invalid event[0m
+    [0m[34m┌─[0m ./sources/migration.move:101:9
+    [0m[34m│[0m    
+[0m[34m101[0m [0m[34m│[0m [0m[31m╭[0m           [0m[31mevent::emit(events::LiquidityLocked {[0m
+    [0m[34m│[0m [0m[31m│[0m [0m[34m╭[0m[0m[34m─────────────────────'[0m
+[0m[34m102[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            migration_id: object::id(config),[0m
+[0m[34m103[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            old_token_amount: amt_old,[0m
+[0m[34m104[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            sui_amount: amt_sui[0m
+[0m[34m105[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m        })[0m;
+    [0m[34m│[0m [0m[31m╰[0m[0m[31m─[0m[0m[34m│[0m[0m[31m──────────^ Invalid event. The function 'sui::event::emit' must be called with a type defined in the current module[0m
+    [0m[34m│[0m   [0m[34m╰[0m[0m[34m─────────' The type 'migrate_fun_sui::events::LiquidityLocked' is not declared in the current module[0m
+
+[0m[1m[38;5;9merror[E04001][0m[1m: restricted visibility[0m
+    [0m[34m┌─[0m ./sources/migration.move:101:21
+    [0m[34m│[0m  
+[0m[34m101[0m [0m[34m│[0m           event::emit([0m[31mevents::LiquidityLocked {[0m
+    [0m[34m│[0m [0m[31m╭[0m[0m[31m─────────────────────^[0m
+[0m[34m102[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            migration_id: object::id(config),[0m
+[0m[34m103[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            old_token_amount: amt_old,[0m
+[0m[34m104[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            sui_amount: amt_sui[0m
+[0m[34m105[0m [0m[34m│[0m [0m[31m│[0m [0m[31m        }[0m);
+    [0m[34m│[0m [0m[31m╰[0m[0m[31m─────────^ Struct 'migrate_fun_sui::events::LiquidityLocked' can only be instantiated within its defining module 'migrate_fun_sui::events'[0m
+    [0m[34m│[0m  
+    [0m[34m┌─[0m ./sources/events.move:13:19
+    [0m[34m│[0m
+[0m[34m 13[0m [0m[34m│[0m     public struct LiquidityLocked has copy, drop {
+    [0m[34m│[0m                   [0m[34m---------------[0m [0m[34mStruct defined in module 'migrate_fun_sui::events'[0m
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a `public` function[0m
+    [0m[34m┌─[0m ./sources/migration.move:110:12
+    [0m[34m│[0m
+[0m[34m110[0m [0m[34m│[0m     public [0m[33mentry[0m fun migrate<OldToken, NewToken>(
+    [0m[34m│[0m            [0m[33m^^^^^[0m [0m[33m`entry` on `public` functions limits composability as it adds restrictions, e.g. the type of each return value must have `drop`. `entry` on `public` is only meaningful in niche scenarios.[0m
+    [0m[34m│[0m
+    [0m[34m=[0m `public` functions can be called from PTBs. `entry` can be used to allow non-`public` functions to be called from PTBs, but it adds restrictions on the usage of input arguments and on the type of return values. Unless this `public` function interacts with an intricate set of other `entry` functions, the `entry` modifier should be removed.
+    [0m[34m=[0m This warning can be suppressed with '#[allow(lint(public_entry))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;9merror[Sui E02008][0m[1m: invalid event[0m
+    [0m[34m┌─[0m ./sources/migration.move:151:9
+    [0m[34m│[0m    
+[0m[34m151[0m [0m[34m│[0m [0m[31m╭[0m           [0m[31mevent::emit(events::UserMigrated {[0m
+    [0m[34m│[0m [0m[31m│[0m [0m[34m╭[0m[0m[34m─────────────────────'[0m
+[0m[34m152[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            migration_id: object::id(config),[0m
+[0m[34m153[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            user,[0m
+[0m[34m154[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            old_amount_burned: amount,[0m
+[0m[34m155[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            new_amount_minted: mint_amount[0m
+[0m[34m156[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m        })[0m;
+    [0m[34m│[0m [0m[31m╰[0m[0m[31m─[0m[0m[34m│[0m[0m[31m──────────^ Invalid event. The function 'sui::event::emit' must be called with a type defined in the current module[0m
+    [0m[34m│[0m   [0m[34m╰[0m[0m[34m─────────' The type 'migrate_fun_sui::events::UserMigrated' is not declared in the current module[0m
+
+[0m[1m[38;5;9merror[E04001][0m[1m: restricted visibility[0m
+    [0m[34m┌─[0m ./sources/migration.move:151:21
+    [0m[34m│[0m  
+[0m[34m151[0m [0m[34m│[0m           event::emit([0m[31mevents::UserMigrated {[0m
+    [0m[34m│[0m [0m[31m╭[0m[0m[31m─────────────────────^[0m
+[0m[34m152[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            migration_id: object::id(config),[0m
+[0m[34m153[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            user,[0m
+[0m[34m154[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            old_amount_burned: amount,[0m
+[0m[34m155[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            new_amount_minted: mint_amount[0m
+[0m[34m156[0m [0m[34m│[0m [0m[31m│[0m [0m[31m        }[0m);
+    [0m[34m│[0m [0m[31m╰[0m[0m[31m─────────^ Struct 'migrate_fun_sui::events::UserMigrated' can only be instantiated within its defining module 'migrate_fun_sui::events'[0m
+    [0m[34m│[0m  
+    [0m[34m┌─[0m ./sources/events.move:19:19
+    [0m[34m│[0m
+[0m[34m 19[0m [0m[34m│[0m     public struct UserMigrated has copy, drop {
+    [0m[34m│[0m                   [0m[34m------------[0m [0m[34mStruct defined in module 'migrate_fun_sui::events'[0m
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a `public` function[0m
+    [0m[34m┌─[0m ./sources/migration.move:161:12
+    [0m[34m│[0m
+[0m[34m161[0m [0m[34m│[0m     public [0m[33mentry[0m fun finalize_migration<OldToken, NewToken>(
+    [0m[34m│[0m            [0m[33m^^^^^[0m [0m[33m`entry` on `public` functions limits composability as it adds restrictions, e.g. the type of each return value must have `drop`. `entry` on `public` is only meaningful in niche scenarios.[0m
+    [0m[34m│[0m
+    [0m[34m=[0m `public` functions can be called from PTBs. `entry` can be used to allow non-`public` functions to be called from PTBs, but it adds restrictions on the usage of input arguments and on the type of return values. Unless this `public` function interacts with an intricate set of other `entry` functions, the `entry` modifier should be removed.
+    [0m[34m=[0m This warning can be suppressed with '#[allow(lint(public_entry))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;9merror[Sui E02008][0m[1m: invalid event[0m
+    [0m[34m┌─[0m ./sources/migration.move:168:9
+    [0m[34m│[0m    
+[0m[34m168[0m [0m[34m│[0m [0m[31m╭[0m           [0m[31mevent::emit(events::MigrationFinalized {[0m
+    [0m[34m│[0m [0m[31m│[0m [0m[34m╭[0m[0m[34m─────────────────────'[0m
+[0m[34m169[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            migration_id: object::id(config),[0m
+[0m[34m170[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            timestamp: 0 [0m
+[0m[34m171[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m        })[0m;
+    [0m[34m│[0m [0m[31m╰[0m[0m[31m─[0m[0m[34m│[0m[0m[31m──────────^ Invalid event. The function 'sui::event::emit' must be called with a type defined in the current module[0m
+    [0m[34m│[0m   [0m[34m╰[0m[0m[34m─────────' The type 'migrate_fun_sui::events::MigrationFinalized' is not declared in the current module[0m
+
+[0m[1m[38;5;9merror[E04001][0m[1m: restricted visibility[0m
+    [0m[34m┌─[0m ./sources/migration.move:168:21
+    [0m[34m│[0m  
+[0m[34m168[0m [0m[34m│[0m           event::emit([0m[31mevents::MigrationFinalized {[0m
+    [0m[34m│[0m [0m[31m╭[0m[0m[31m─────────────────────^[0m
+[0m[34m169[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            migration_id: object::id(config),[0m
+[0m[34m170[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            timestamp: 0 [0m
+[0m[34m171[0m [0m[34m│[0m [0m[31m│[0m [0m[31m        }[0m);
+    [0m[34m│[0m [0m[31m╰[0m[0m[31m─────────^ Struct 'migrate_fun_sui::events::MigrationFinalized' can only be instantiated within its defining module 'migrate_fun_sui::events'[0m
+    [0m[34m│[0m  
+    [0m[34m┌─[0m ./sources/events.move:26:19
+    [0m[34m│[0m
+[0m[34m 26[0m [0m[34m│[0m     public struct MigrationFinalized has copy, drop {
+    [0m[34m│[0m                   [0m[34m------------------[0m [0m[34mStruct defined in module 'migrate_fun_sui::events'[0m
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a `public` function[0m
+    [0m[34m┌─[0m ./sources/migration.move:176:12
+    [0m[34m│[0m
+[0m[34m176[0m [0m[34m│[0m     public [0m[33mentry[0m fun create_new_pool<OldToken, NewToken>(
+    [0m[34m│[0m            [0m[33m^^^^^[0m [0m[33m`entry` on `public` functions limits composability as it adds restrictions, e.g. the type of each return value must have `drop`. `entry` on `public` is only meaningful in niche scenarios.[0m
+    [0m[34m│[0m
+    [0m[34m=[0m `public` functions can be called from PTBs. `entry` can be used to allow non-`public` functions to be called from PTBs, but it adds restrictions on the usage of input arguments and on the type of return values. Unless this `public` function interacts with an intricate set of other `entry` functions, the `entry` modifier should be removed.
+    [0m[34m=[0m This warning can be suppressed with '#[allow(lint(public_entry))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;9merror[Sui E02008][0m[1m: invalid event[0m
+    [0m[34m┌─[0m ./sources/migration.move:223:9
+    [0m[34m│[0m    
+[0m[34m223[0m [0m[34m│[0m [0m[31m╭[0m           [0m[31mevent::emit(events::NewPoolCreated {[0m
+    [0m[34m│[0m [0m[31m│[0m [0m[34m╭[0m[0m[34m─────────────────────'[0m
+[0m[34m224[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            migration_id: object::id(config),[0m
+[0m[34m225[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            pool_id: object::id(pool_registry), [0m
+[0m[34m226[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m            liquidity_amount: 0 [0m
+[0m[34m227[0m [0m[34m│[0m [0m[31m│[0m [0m[34m│[0m [0m[31m        })[0m;
+    [0m[34m│[0m [0m[31m╰[0m[0m[31m─[0m[0m[34m│[0m[0m[31m──────────^ Invalid event. The function 'sui::event::emit' must be called with a type defined in the current module[0m
+    [0m[34m│[0m   [0m[34m╰[0m[0m[34m─────────' The type 'migrate_fun_sui::events::NewPoolCreated' is not declared in the current module[0m
+
+[0m[1m[38;5;9merror[E04001][0m[1m: restricted visibility[0m
+    [0m[34m┌─[0m ./sources/migration.move:223:21
+    [0m[34m│[0m  
+[0m[34m223[0m [0m[34m│[0m           event::emit([0m[31mevents::NewPoolCreated {[0m
+    [0m[34m│[0m [0m[31m╭[0m[0m[31m─────────────────────^[0m
+[0m[34m224[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            migration_id: object::id(config),[0m
+[0m[34m225[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            pool_id: object::id(pool_registry), [0m
+[0m[34m226[0m [0m[34m│[0m [0m[31m│[0m [0m[31m            liquidity_amount: 0 [0m
+[0m[34m227[0m [0m[34m│[0m [0m[31m│[0m [0m[31m        }[0m);
+    [0m[34m│[0m [0m[31m╰[0m[0m[31m─────────^ Struct 'migrate_fun_sui::events::NewPoolCreated' can only be instantiated within its defining module 'migrate_fun_sui::events'[0m
+    [0m[34m│[0m  
+    [0m[34m┌─[0m ./sources/events.move:31:19
+    [0m[34m│[0m
+[0m[34m 31[0m [0m[34m│[0m     public struct NewPoolCreated has copy, drop {
+    [0m[34m│[0m                   [0m[34m--------------[0m [0m[34mStruct defined in module 'migrate_fun_sui::events'[0m
+
+[0m[1m[38;5;11mwarning[W09001][0m[1m: unused alias[0m
+  [0m[34m┌─[0m ./sources/mock_new_token.move:3:14
+  [0m[34m│[0m
+[0m[34m3[0m [0m[34m│[0m     use sui::[0m[33murl[0m;
+  [0m[34m│[0m              [0m[33m^^^[0m [0m[33mUnused 'use' of alias 'url'. Consider removing it[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W04037][0m[1m: deprecated usage[0m
+  [0m[34m┌─[0m ./sources/mock_new_token.move:8:42
+  [0m[34m│[0m
+[0m[34m8[0m [0m[34m│[0m         let (treasury, metadata) = coin::[0m[33mcreate_currency[0m(
+  [0m[34m│[0m                                          [0m[33m^^^^^^^^^^^^^^^[0m [0m[33mThe function 'sui::coin::create_currency' is deprecated: Use `coin_registry::new_currency_with_otw` instead[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(deprecated_usage)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/events.move:3:22
+  [0m[34m│[0m
+[0m[34m3[0m [0m[34m│[0m     use sui::object::[0m[33mID[0m;
+  [0m[34m│[0m                      [0m[33m^^[0m [0m[33mUnnecessary alias 'ID' for module member 'sui::object::ID'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+  [0m[34m┌─[0m ./sources/events.move:6:9
+  [0m[34m│[0m
+[0m[34m6[0m [0m[34m│[0m         [0m[33mmigration_id[0m: ID,
+  [0m[34m│[0m         [0m[33m^^^^^^^^^^^^[0m [0m[33mThe 'migration_id' field of the 'MigrationInitialized' type is unused[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+  [0m[34m┌─[0m ./sources/events.move:7:9
+  [0m[34m│[0m
+[0m[34m7[0m [0m[34m│[0m         [0m[33mold_token[0m: std::ascii::String,
+  [0m[34m│[0m         [0m[33m^^^^^^^^^[0m [0m[33mThe 'old_token' field of the 'MigrationInitialized' type is unused[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+  [0m[34m┌─[0m ./sources/events.move:8:9
+  [0m[34m│[0m
+[0m[34m8[0m [0m[34m│[0m         [0m[33mnew_token[0m: std::ascii::String,
+  [0m[34m│[0m         [0m[33m^^^^^^^^^[0m [0m[33mThe 'new_token' field of the 'MigrationInitialized' type is unused[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+  [0m[34m┌─[0m ./sources/events.move:9:9
+  [0m[34m│[0m
+[0m[34m9[0m [0m[34m│[0m         [0m[33mratio[0m: u64, // scaled by 1e9 usually, or just direct ratio
+  [0m[34m│[0m         [0m[33m^^^^^[0m [0m[33mThe 'ratio' field of the 'MigrationInitialized' type is unused[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+   [0m[34m┌─[0m ./sources/events.move:10:9
+   [0m[34m│[0m
+[0m[34m10[0m [0m[34m│[0m         [0m[33mstart_time[0m: u64
+   [0m[34m│[0m         [0m[33m^^^^^^^^^^[0m [0m[33mThe 'start_time' field of the 'MigrationInitialized' type is unused[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+   [0m[34m┌─[0m ./sources/events.move:14:9
+   [0m[34m│[0m
+[0m[34m14[0m [0m[34m│[0m         [0m[33mmigration_id[0m: ID,
+   [0m[34m│[0m         [0m[33m^^^^^^^^^^^^[0m [0m[33mThe 'migration_id' field of the 'LiquidityLocked' type is unused[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+   [0m[34m┌─[0m ./sources/events.move:15:9
+   [0m[34m│[0m
+[0m[34m15[0m [0m[34m│[0m         [0m[33mold_token_amount[0m: u64,
+   [0m[34m│[0m         [0m[33m^^^^^^^^^^^^^^^^[0m [0m[33mThe 'old_token_amount' field of the 'LiquidityLocked' type is unused[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+   [0m[34m┌─[0m ./sources/events.move:16:9
+   [0m[34m│[0m
+[0m[34m16[0m [0m[34m│[0m         [0m[33msui_amount[0m: u64
+   [0m[34m│[0m         [0m[33m^^^^^^^^^^[0m [0m[33mThe 'sui_amount' field of the 'LiquidityLocked' type is unused[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+   [0m[34m┌─[0m ./sources/events.move:20:9
+   [0m[34m│[0m
+[0m[34m20[0m [0m[34m│[0m         [0m[33mmigration_id[0m: ID,
+   [0m[34m│[0m         [0m[33m^^^^^^^^^^^^[0m [0m[33mThe 'migration_id' field of the 'UserMigrated' type is unused[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+   [0m[34m┌─[0m ./sources/events.move:21:9
+   [0m[34m│[0m
+[0m[34m21[0m [0m[34m│[0m         [0m[33muser[0m: address,
+   [0m[34m│[0m         [0m[33m^^^^[0m [0m[33mThe 'user' field of the 'UserMigrated' type is unused[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+   [0m[34m┌─[0m ./sources/events.move:22:9
+   [0m[34m│[0m
+[0m[34m22[0m [0m[34m│[0m         [0m[33mold_amount_burned[0m: u64,
+   [0m[34m│[0m         [0m[33m^^^^^^^^^^^^^^^^^[0m [0m[33mThe 'old_amount_burned' field of the 'UserMigrated' type is unused[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+   [0m[34m┌─[0m ./sources/events.move:23:9
+   [0m[34m│[0m
+[0m[34m23[0m [0m[34m│[0m         [0m[33mnew_amount_minted[0m: u64
+   [0m[34m│[0m         [0m[33m^^^^^^^^^^^^^^^^^[0m [0m[33mThe 'new_amount_minted' field of the 'UserMigrated' type is unused[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+   [0m[34m┌─[0m ./sources/events.move:27:9
+   [0m[34m│[0m
+[0m[34m27[0m [0m[34m│[0m         [0m[33mmigration_id[0m: ID,
+   [0m[34m│[0m         [0m[33m^^^^^^^^^^^^[0m [0m[33mThe 'migration_id' field of the 'MigrationFinalized' type is unused[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+   [0m[34m┌─[0m ./sources/events.move:28:9
+   [0m[34m│[0m
+[0m[34m28[0m [0m[34m│[0m         [0m[33mtimestamp[0m: u64
+   [0m[34m│[0m         [0m[33m^^^^^^^^^[0m [0m[33mThe 'timestamp' field of the 'MigrationFinalized' type is unused[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+   [0m[34m┌─[0m ./sources/events.move:32:9
+   [0m[34m│[0m
+[0m[34m32[0m [0m[34m│[0m         [0m[33mmigration_id[0m: ID,
+   [0m[34m│[0m         [0m[33m^^^^^^^^^^^^[0m [0m[33mThe 'migration_id' field of the 'NewPoolCreated' type is unused[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+   [0m[34m┌─[0m ./sources/events.move:33:9
+   [0m[34m│[0m
+[0m[34m33[0m [0m[34m│[0m         [0m[33mpool_id[0m: ID,
+   [0m[34m│[0m         [0m[33m^^^^^^^[0m [0m[33mThe 'pool_id' field of the 'NewPoolCreated' type is unused[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09009][0m[1m: unused struct field[0m
+   [0m[34m┌─[0m ./sources/events.move:34:9
+   [0m[34m│[0m
+[0m[34m34[0m [0m[34m│[0m         [0m[33mliquidity_amount[0m: u128
+   [0m[34m│[0m         [0m[33m^^^^^^^^^^^^^^^^[0m [0m[33mThe 'liquidity_amount' field of the 'NewPoolCreated' type is unused[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_field)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/snapshot.move:3:14
+  [0m[34m│[0m
+[0m[34m3[0m [0m[34m│[0m     use std::[0m[33mvector[0m;
+  [0m[34m│[0m              [0m[33m^^^^^^[0m [0m[33mUnnecessary alias 'vector' for module 'std::vector'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09001][0m[1m: unused alias[0m
+  [0m[34m┌─[0m ./sources/mock_token.move:3:14
+  [0m[34m│[0m
+[0m[34m3[0m [0m[34m│[0m     use sui::[0m[33murl[0m;
+  [0m[34m│[0m              [0m[33m^^^[0m [0m[33mUnused 'use' of alias 'url'. Consider removing it[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W04037][0m[1m: deprecated usage[0m
+  [0m[34m┌─[0m ./sources/mock_token.move:8:42
+  [0m[34m│[0m
+[0m[34m8[0m [0m[34m│[0m         let (treasury, metadata) = coin::[0m[33mcreate_currency[0m(
+  [0m[34m│[0m                                          [0m[33m^^^^^^^^^^^^^^^[0m [0m[33mThe function 'sui::coin::create_currency' is deprecated: Use `coin_registry::new_currency_with_otw` instead[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(deprecated_usage)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/flowx_clmm_adapter.move:5:27
+  [0m[34m│[0m
+[0m[34m5[0m [0m[34m│[0m     use sui::tx_context::{[0m[33mSelf[0m, TxContext};
+  [0m[34m│[0m                           [0m[33m^^^^[0m [0m[33mUnnecessary alias 'tx_context' for module 'sui::tx_context'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/flowx_clmm_adapter.move:5:33
+  [0m[34m│[0m
+[0m[34m5[0m [0m[34m│[0m     use sui::tx_context::{Self, [0m[33mTxContext[0m};
+  [0m[34m│[0m                                 [0m[33m^^^^^^^^^[0m [0m[33mUnnecessary alias 'TxContext' for module member 'sui::tx_context::TxContext'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/flowx_clmm_adapter.move:6:14
+  [0m[34m│[0m
+[0m[34m6[0m [0m[34m│[0m     use sui::[0m[33mtransfer[0m;
+  [0m[34m│[0m              [0m[33m^^^^^^^^[0m [0m[33mUnnecessary alias 'transfer' for module 'sui::transfer'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99001][0m[1m: non-composable transfer to sender[0m
+    [0m[34m┌─[0m ./sources/flowx_clmm_adapter.move:111:9
+    [0m[34m│[0m
+[0m[34m 63[0m [0m[34m│[0m     public fun add_liquidity<X, Y>(
+    [0m[34m│[0m                [0m[34m-------------[0m [0m[34mReturning an object from a function, allows a caller to use the object and enables composability via programmable transactions.[0m
+    [0m[34m·[0m
+[0m[34m111[0m [0m[34m│[0m         [0m[33mtransfer::public_transfer(position, tx_context::sender(ctx))[0m;
+    [0m[34m│[0m         [0m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+    [0m[34m│[0m         [0m[33m│[0m                                   [0m[34m│[0m
+    [0m[34m│[0m         [0m[33m│[0m                                   [0m[34mTransaction sender address coming from here[0m
+    [0m[34m│[0m         [0m[33mTransfer of an object to transaction sender address[0m
+    [0m[34m│[0m
+    [0m[34m=[0m This warning can be suppressed with '#[allow(lint(self_transfer))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+Failed to build Move modules: Compilation error.

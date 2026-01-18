@@ -5,7 +5,8 @@ edition = "2024.beta" # Using beta edition for latest features
 
 [dependencies]
 Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet", override = true }
-flowx_clmm = { git = "https://github.com/FlowX-Finance/clmm-contracts.git", rev = "develop" }
+flowx_clmm = { local = "../flowx-clmm" }
 
 [addresses]
 migrate_fun_sui = "0x0"
+

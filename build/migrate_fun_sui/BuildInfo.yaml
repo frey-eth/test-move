@@ -2,13 +2,13 @@
 compiled_package_info:
   package_name: migrate_fun_sui
   build_flags:
-    test_mode: false
+    test_mode: true
     generate_docs: false
     save_disassembly: false
     install_dir: ~
     force_recompilation: false
     allow_dirty: false
-    default_flavor: ~
+    default_flavor: sui
     default_edition: ~
     silence_warnings: false
     warnings_are_errors: false
@@ -20,8 +20,8 @@ compiled_package_info:
     modes: []
     force_lock_file: false
     root_as_zero: false
-    environment: ~
-    set_unpublished_deps_to_zero: true
+    environment: testnet
+    set_unpublished_deps_to_zero: false
 dependencies:
   - MoveStdlib
   - Sui

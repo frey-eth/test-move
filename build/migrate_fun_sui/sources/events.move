@@ -1,39 +1,105 @@
 module migrate_fun_sui::events {
-    use sui::event;
     use sui::object::{ID};
+    use sui::event;
+    use std::ascii::{String};
 
-    /// Emitted when a migration is successfully completed.
-    public struct MigrationCompleted has copy, drop {
-        old_pool: ID,
-        new_pool: ID, // This might not be available directly if we just create and don't get the ID back immediately in v2
-                      // But we can emit the coin types.
-        coin_type_x: vector<u8>, // ASCII string of type
-        coin_type_y: vector<u8>,
-        old_market_cap: u128,
-        new_start_price_x64: u128,
-        new_supply: u64,
+    // --- Event Structs (Internal Use or Public Inspection) ---
+
+    public struct MigrationInitialized has copy, drop {
+        migration_id: ID,
+        old_token: String,
+        new_token: String,
+        ratio: u64,
+        start_time: u64
+    }
+
+    public struct LiquidityLocked has copy, drop {
+        migration_id: ID,
+        old_token_amount: u64,
+        sui_amount: u64
+    }
+
+    public struct UserMigrated has copy, drop {
+        migration_id: ID,
+        user: address,
+        old_amount_burned: u64,
+        new_amount_minted: u64
+    }
+
+    public struct MigrationFinalized has copy, drop {
+        migration_id: ID,
         timestamp: u64
     }
 
-    public fun emit_migration_completed(
-        old_pool: ID,
-        new_pool: ID,
-        coin_type_x: vector<u8>,
-        coin_type_y: vector<u8>,
-        old_market_cap: u128,
-        new_start_price_x64: u128,
-        new_supply: u64,
+    public struct NewPoolCreated has copy, drop {
+        migration_id: ID,
+        pool_id: ID,
+        liquidity_amount: u128
+    }
+
+    // --- Public Emitters ---
+
+    public fun emit_migration_initialized(
+        migration_id: ID,
+        old_token: String,
+        new_token: String,
+        ratio: u64,
+        start_time: u64
+    ) {
+        event::emit(MigrationInitialized {
+            migration_id,
+            old_token,
+            new_token,
+            ratio,
+            start_time
+        });
+    }
+
+    public fun emit_liquidity_locked(
+        migration_id: ID,
+        old_token_amount: u64,
+        sui_amount: u64
+    ) {
+        event::emit(LiquidityLocked {
+            migration_id,
+            old_token_amount,
+            sui_amount
+        });
+    }
+
+    public fun emit_user_migrated(
+        migration_id: ID,
+        user: address,
+        old_amount_burned: u64,
+        new_amount_minted: u64
+    ) {
+        event::emit(UserMigrated {
+            migration_id,
+            user,
+            old_amount_burned,
+            new_amount_minted
+        });
+    }
+
+    public fun emit_migration_finalized(
+        migration_id: ID,
         timestamp: u64
     ) {
-        event::emit(MigrationCompleted {
-            old_pool,
-            new_pool,
-            coin_type_x,
-            coin_type_y,
-            old_market_cap,
-            new_start_price_x64,
-            new_supply,
+        event::emit(MigrationFinalized {
+            migration_id,
             timestamp
+        });
+    }
+
+    public fun emit_new_pool_created(
+        migration_id: ID,
+        pool_id: ID,
+        liquidity_amount: u128
+    ) {
+        event::emit(NewPoolCreated {
+            migration_id,
+            pool_id,
+            liquidity_amount
         });
     }
 }

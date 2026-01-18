@@ -1,0 +1,294 @@
+[NOTE] Dependencies on Sui, MoveStdlib, Bridge, DeepBook, and SuiSystem are automatically added, but this feature is disabled for your package because you have explicitly included dependencies on Sui. Consider removing these dependencies from `Move.toml`.
+INCLUDING DEPENDENCY MoveStdlib
+INCLUDING DEPENDENCY Sui
+INCLUDING DEPENDENCY flowx_clmm
+BUILDING migrate_fun_sui
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./tests/migration_tests.move:6:23
+  [0m[34m│[0m
+[0m[34m6[0m [0m[34m│[0m     use sui::object::{[0m[33mSelf[0m, UID};
+  [0m[34m│[0m                       [0m[33m^^^^[0m [0m[33mUnnecessary alias 'object' for module 'sui::object'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09001][0m[1m: unused alias[0m
+  [0m[34m┌─[0m ./tests/migration_tests.move:6:23
+  [0m[34m│[0m
+[0m[34m6[0m [0m[34m│[0m     use sui::object::{[0m[33mSelf[0m, UID};
+  [0m[34m│[0m                       [0m[33m^^^^[0m [0m[33mUnused 'use' of alias 'object'. Consider removing it[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./tests/migration_tests.move:6:29
+  [0m[34m│[0m
+[0m[34m6[0m [0m[34m│[0m     use sui::object::{Self, [0m[33mUID[0m};
+  [0m[34m│[0m                             [0m[33m^^^[0m [0m[33mUnnecessary alias 'UID' for module member 'sui::object::UID'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09001][0m[1m: unused alias[0m
+  [0m[34m┌─[0m ./tests/migration_tests.move:6:29
+  [0m[34m│[0m
+[0m[34m6[0m [0m[34m│[0m     use sui::object::{Self, [0m[33mUID[0m};
+  [0m[34m│[0m                             [0m[33m^^^[0m [0m[33mUnused 'use' of alias 'UID'. Consider removing it[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./tests/migration_tests.move:7:14
+  [0m[34m│[0m
+[0m[34m7[0m [0m[34m│[0m     use sui::[0m[33mtx_context[0m;
+  [0m[34m│[0m              [0m[33m^^^^^^^^^^[0m [0m[33mUnnecessary alias 'tx_context' for module 'sui::tx_context'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09001][0m[1m: unused alias[0m
+  [0m[34m┌─[0m ./tests/migration_tests.move:7:14
+  [0m[34m│[0m
+[0m[34m7[0m [0m[34m│[0m     use sui::[0m[33mtx_context[0m;
+  [0m[34m│[0m              [0m[33m^^^^^^^^^^[0m [0m[33mUnused 'use' of alias 'tx_context'. Consider removing it[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./tests/migration_tests.move:8:14
+  [0m[34m│[0m
+[0m[34m8[0m [0m[34m│[0m     use std::[0m[33mvector[0m;
+  [0m[34m│[0m              [0m[33m^^^^^^[0m [0m[33mUnnecessary alias 'vector' for module 'std::vector'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./tests/migration_tests.move:9:14
+  [0m[34m│[0m
+[0m[34m9[0m [0m[34m│[0m     use sui::[0m[33mtransfer[0m;
+  [0m[34m│[0m              [0m[33m^^^^^^^^[0m [0m[33mUnnecessary alias 'transfer' for module 'sui::transfer'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09001][0m[1m: unused alias[0m
+   [0m[34m┌─[0m ./tests/migration_tests.move:12:34
+   [0m[34m│[0m
+[0m[34m12[0m [0m[34m│[0m     use migrate_fun_sui::vault::{[0m[33mSelf[0m, Vault};
+   [0m[34m│[0m                                  [0m[33m^^^^[0m [0m[33mUnused 'use' of alias 'vault'. Consider removing it[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09011][0m[1m: unused constant[0m
+   [0m[34m┌─[0m ./tests/migration_tests.move:26:11
+   [0m[34m│[0m
+[0m[34m26[0m [0m[34m│[0m     const [0m[33mUSER2[0m: address = @0x2;
+   [0m[34m│[0m           [0m[33m^^^^^[0m [0m[33mThe constant 'USER2' is never used. Consider removing it.[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(unused_const)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09001][0m[1m: unused alias[0m
+  [0m[34m┌─[0m ./sources/mock_new_token.move:3:14
+  [0m[34m│[0m
+[0m[34m3[0m [0m[34m│[0m     use sui::[0m[33murl[0m;
+  [0m[34m│[0m              [0m[33m^^^[0m [0m[33mUnused 'use' of alias 'url'. Consider removing it[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W04037][0m[1m: deprecated usage[0m
+  [0m[34m┌─[0m ./sources/mock_new_token.move:8:42
+  [0m[34m│[0m
+[0m[34m8[0m [0m[34m│[0m         let (treasury, metadata) = coin::[0m[33mcreate_currency[0m(
+  [0m[34m│[0m                                          [0m[33m^^^^^^^^^^^^^^^[0m [0m[33mThe function 'sui::coin::create_currency' is deprecated: Use `coin_registry::new_currency_with_otw` instead[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(deprecated_usage)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/migration.move:2:23
+  [0m[34m│[0m
+[0m[34m2[0m [0m[34m│[0m     use sui::object::{[0m[33mSelf[0m, UID};
+  [0m[34m│[0m                       [0m[33m^^^^[0m [0m[33mUnnecessary alias 'object' for module 'sui::object'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/migration.move:2:29
+  [0m[34m│[0m
+[0m[34m2[0m [0m[34m│[0m     use sui::object::{Self, [0m[33mUID[0m};
+  [0m[34m│[0m                             [0m[33m^^^[0m [0m[33mUnnecessary alias 'UID' for module member 'sui::object::UID'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/migration.move:3:27
+  [0m[34m│[0m
+[0m[34m3[0m [0m[34m│[0m     use sui::tx_context::{[0m[33mSelf[0m, TxContext};
+  [0m[34m│[0m                           [0m[33m^^^^[0m [0m[33mUnnecessary alias 'tx_context' for module 'sui::tx_context'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/migration.move:3:33
+  [0m[34m│[0m
+[0m[34m3[0m [0m[34m│[0m     use sui::tx_context::{Self, [0m[33mTxContext[0m};
+  [0m[34m│[0m                                 [0m[33m^^^^^^^^^[0m [0m[33mUnnecessary alias 'TxContext' for module member 'sui::tx_context::TxContext'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/migration.move:6:14
+  [0m[34m│[0m
+[0m[34m6[0m [0m[34m│[0m     use sui::[0m[33mtransfer[0m;
+  [0m[34m│[0m              [0m[33m^^^^^^^^[0m [0m[33mUnnecessary alias 'transfer' for module 'sui::transfer'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09001][0m[1m: unused alias[0m
+  [0m[34m┌─[0m ./sources/migration.move:7:14
+  [0m[34m│[0m
+[0m[34m7[0m [0m[34m│[0m     use sui::[0m[33mevent[0m; 
+  [0m[34m│[0m              [0m[33m^^^^^[0m [0m[33mUnused 'use' of alias 'event'. Consider removing it[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a `public` function[0m
+   [0m[34m┌─[0m ./sources/migration.move:48:12
+   [0m[34m│[0m
+[0m[34m48[0m [0m[34m│[0m     public [0m[33mentry[0m fun initialize_migration<OldToken, NewToken>(
+   [0m[34m│[0m            [0m[33m^^^^^[0m [0m[33m`entry` on `public` functions limits composability as it adds restrictions, e.g. the type of each return value must have `drop`. `entry` on `public` is only meaningful in niche scenarios.[0m
+   [0m[34m│[0m
+   [0m[34m=[0m `public` functions can be called from PTBs. `entry` can be used to allow non-`public` functions to be called from PTBs, but it adds restrictions on the usage of input arguments and on the type of return values. Unless this `public` function interacts with an intricate set of other `entry` functions, the `entry` modifier should be removed.
+   [0m[34m=[0m This warning can be suppressed with '#[allow(lint(public_entry))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W04037][0m[1m: deprecated usage[0m
+   [0m[34m┌─[0m ./sources/migration.move:75:29
+   [0m[34m│[0m
+[0m[34m75[0m [0m[34m│[0m             std::type_name::[0m[33mget_with_original_ids[0m<OldToken>().into_string(),
+   [0m[34m│[0m                             [0m[33m^^^^^^^^^^^^^^^^^^^^^[0m [0m[33mThe function 'std::type_name::get_with_original_ids' is deprecated: Renamed to `with_original_ids` for clarity.[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(deprecated_usage)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W04037][0m[1m: deprecated usage[0m
+   [0m[34m┌─[0m ./sources/migration.move:76:29
+   [0m[34m│[0m
+[0m[34m76[0m [0m[34m│[0m             std::type_name::[0m[33mget_with_original_ids[0m<NewToken>().into_string(),
+   [0m[34m│[0m                             [0m[33m^^^^^^^^^^^^^^^^^^^^^[0m [0m[33mThe function 'std::type_name::get_with_original_ids' is deprecated: Renamed to `with_original_ids` for clarity.[0m
+   [0m[34m│[0m
+   [0m[34m=[0m This warning can be suppressed with '#[allow(deprecated_usage)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a `public` function[0m
+   [0m[34m┌─[0m ./sources/migration.move:86:12
+   [0m[34m│[0m
+[0m[34m86[0m [0m[34m│[0m     public [0m[33mentry[0m fun lock_liquidity<OldToken, NewToken>(
+   [0m[34m│[0m            [0m[33m^^^^^[0m [0m[33m`entry` on `public` functions limits composability as it adds restrictions, e.g. the type of each return value must have `drop`. `entry` on `public` is only meaningful in niche scenarios.[0m
+   [0m[34m│[0m
+   [0m[34m=[0m `public` functions can be called from PTBs. `entry` can be used to allow non-`public` functions to be called from PTBs, but it adds restrictions on the usage of input arguments and on the type of return values. Unless this `public` function interacts with an intricate set of other `entry` functions, the `entry` modifier should be removed.
+   [0m[34m=[0m This warning can be suppressed with '#[allow(lint(public_entry))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a `public` function[0m
+    [0m[34m┌─[0m ./sources/migration.move:110:12
+    [0m[34m│[0m
+[0m[34m110[0m [0m[34m│[0m     public [0m[33mentry[0m fun migrate<OldToken, NewToken>(
+    [0m[34m│[0m            [0m[33m^^^^^[0m [0m[33m`entry` on `public` functions limits composability as it adds restrictions, e.g. the type of each return value must have `drop`. `entry` on `public` is only meaningful in niche scenarios.[0m
+    [0m[34m│[0m
+    [0m[34m=[0m `public` functions can be called from PTBs. `entry` can be used to allow non-`public` functions to be called from PTBs, but it adds restrictions on the usage of input arguments and on the type of return values. Unless this `public` function interacts with an intricate set of other `entry` functions, the `entry` modifier should be removed.
+    [0m[34m=[0m This warning can be suppressed with '#[allow(lint(public_entry))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a `public` function[0m
+    [0m[34m┌─[0m ./sources/migration.move:161:12
+    [0m[34m│[0m
+[0m[34m161[0m [0m[34m│[0m     public [0m[33mentry[0m fun finalize_migration<OldToken, NewToken>(
+    [0m[34m│[0m            [0m[33m^^^^^[0m [0m[33m`entry` on `public` functions limits composability as it adds restrictions, e.g. the type of each return value must have `drop`. `entry` on `public` is only meaningful in niche scenarios.[0m
+    [0m[34m│[0m
+    [0m[34m=[0m `public` functions can be called from PTBs. `entry` can be used to allow non-`public` functions to be called from PTBs, but it adds restrictions on the usage of input arguments and on the type of return values. Unless this `public` function interacts with an intricate set of other `entry` functions, the `entry` modifier should be removed.
+    [0m[34m=[0m This warning can be suppressed with '#[allow(lint(public_entry))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a `public` function[0m
+    [0m[34m┌─[0m ./sources/migration.move:176:12
+    [0m[34m│[0m
+[0m[34m176[0m [0m[34m│[0m     public [0m[33mentry[0m fun create_new_pool<OldToken, NewToken>(
+    [0m[34m│[0m            [0m[33m^^^^^[0m [0m[33m`entry` on `public` functions limits composability as it adds restrictions, e.g. the type of each return value must have `drop`. `entry` on `public` is only meaningful in niche scenarios.[0m
+    [0m[34m│[0m
+    [0m[34m=[0m `public` functions can be called from PTBs. `entry` can be used to allow non-`public` functions to be called from PTBs, but it adds restrictions on the usage of input arguments and on the type of return values. Unless this `public` function interacts with an intricate set of other `entry` functions, the `entry` modifier should be removed.
+    [0m[34m=[0m This warning can be suppressed with '#[allow(lint(public_entry))]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/events.move:2:23
+  [0m[34m│[0m
+[0m[34m2[0m [0m[34m│[0m     use sui::object::{[0m[33mID[0m};
+  [0m[34m│[0m                       [0m[33m^^[0m [0m[33mUnnecessary alias 'ID' for module member 'sui::object::ID'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/snapshot.move:2:14
+  [0m[34m│[0m
+[0m[34m2[0m [0m[34m│[0m     use std::[0m[33mvector[0m;
+  [0m[34m│[0m              [0m[33m^^^^^^[0m [0m[33mUnnecessary alias 'vector' for module 'std::vector'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;9merror[E04007][0m[1m: incompatible types[0m
+   [0m[34m┌─[0m ./sources/snapshot.move:30:9
+   [0m[34m│[0m
+[0m[34m30[0m [0m[34m│[0m         [0m[31mstd::hash::sha3_256(&payload)[0m
+   [0m[34m│[0m         [0m[31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+   [0m[34m│[0m         [0m[31m│[0m                   [0m[34m│[0m
+   [0m[34m│[0m         [0m[31m│[0m                   [0m[34mGiven: '&vector<u8>'[0m
+   [0m[34m│[0m         [0m[31mInvalid call of 'std::hash::sha3_256'. Invalid argument for parameter 'data'[0m
+   [0m[34m│[0m
+   [0m[34m┌─[0m /Users/duong/.move/git/https___github_com_MystenLabs_sui_git_caeb21b13ef6e26cd8c5e48be520bcf0598d48c3/crates/sui-framework/packages/move-stdlib/sources/hash.move:11:34
+   [0m[34m│[0m
+[0m[34m11[0m [0m[34m│[0m public native fun sha3_256(data: vector<u8>): vector<u8>;
+   [0m[34m│[0m                                  [0m[34m----------[0m [0m[34mExpected: 'vector<u8>'[0m
+
+[0m[1m[38;5;9merror[E04007][0m[1m: incompatible types[0m
+   [0m[34m┌─[0m ./sources/snapshot.move:62:9
+   [0m[34m│[0m
+[0m[34m62[0m [0m[34m│[0m         [0m[31mstd::hash::sha3_256(&data)[0m
+   [0m[34m│[0m         [0m[31m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+   [0m[34m│[0m         [0m[31m│[0m                   [0m[34m│[0m
+   [0m[34m│[0m         [0m[31m│[0m                   [0m[34mGiven: '&vector<u8>'[0m
+   [0m[34m│[0m         [0m[31mInvalid call of 'std::hash::sha3_256'. Invalid argument for parameter 'data'[0m
+   [0m[34m│[0m
+   [0m[34m┌─[0m /Users/duong/.move/git/https___github_com_MystenLabs_sui_git_caeb21b13ef6e26cd8c5e48be520bcf0598d48c3/crates/sui-framework/packages/move-stdlib/sources/hash.move:11:34
+   [0m[34m│[0m
+[0m[34m11[0m [0m[34m│[0m public native fun sha3_256(data: vector<u8>): vector<u8>;
+   [0m[34m│[0m                                  [0m[34m----------[0m [0m[34mExpected: 'vector<u8>'[0m
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/flowx_clmm_adapter.move:5:27
+  [0m[34m│[0m
+[0m[34m5[0m [0m[34m│[0m     use sui::tx_context::{[0m[33mSelf[0m, TxContext};
+  [0m[34m│[0m                           [0m[33m^^^^[0m [0m[33mUnnecessary alias 'tx_context' for module 'sui::tx_context'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/flowx_clmm_adapter.move:5:33
+  [0m[34m│[0m
+[0m[34m5[0m [0m[34m│[0m     use sui::tx_context::{Self, [0m[33mTxContext[0m};
+  [0m[34m│[0m                                 [0m[33m^^^^^^^^^[0m [0m[33mUnnecessary alias 'TxContext' for module member 'sui::tx_context::TxContext'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[34m┌─[0m ./sources/flowx_clmm_adapter.move:6:14
+  [0m[34m│[0m
+[0m[34m6[0m [0m[34m│[0m     use sui::[0m[33mtransfer[0m;
+  [0m[34m│[0m              [0m[33m^^^^^^^^[0m [0m[33mUnnecessary alias 'transfer' for module 'sui::transfer'. This alias is provided by default[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(duplicate_alias)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09001][0m[1m: unused alias[0m
+  [0m[34m┌─[0m ./sources/mock_token.move:3:14
+  [0m[34m│[0m
+[0m[34m3[0m [0m[34m│[0m     use sui::[0m[33murl[0m;
+  [0m[34m│[0m              [0m[33m^^^[0m [0m[33mUnused 'use' of alias 'url'. Consider removing it[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(unused_use)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W04037][0m[1m: deprecated usage[0m
+  [0m[34m┌─[0m ./sources/mock_token.move:8:42
+  [0m[34m│[0m
+[0m[34m8[0m [0m[34m│[0m         let (treasury, metadata) = coin::[0m[33mcreate_currency[0m(
+  [0m[34m│[0m                                          [0m[33m^^^^^^^^^^^^^^^[0m [0m[33mThe function 'sui::coin::create_currency' is deprecated: Use `coin_registry::new_currency_with_otw` instead[0m
+  [0m[34m│[0m
+  [0m[34m=[0m This warning can be suppressed with '#[allow(deprecated_usage)]' applied to the 'module' or module member ('const', 'fun', or 'struct')
+

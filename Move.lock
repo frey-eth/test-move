@@ -29,7 +29,7 @@ manifest_digest = "7AFB66695545775FBFBB2D3078ADFD084244D5002392E837FDE21D9EA1C6D
 deps = { MoveStdlib = "MoveStdlib_1" }
 
 [pinned.testnet.flowx_clmm]
-source = { git = "https://github.com/FlowX-Finance/clmm-contracts.git", subdir = ".", rev = "040cfd34b4b91687754563b63c8be3b9386f35a6" }
+source = { local = "../flowx-clmm" }
 use_environment = "testnet"
 manifest_digest = "C2772B976EC6A56C32071C116C869B6B810C731713A3E79642606E99AE1F55DA"
 deps = { Sui = "Sui_1" }
@@ -37,5 +37,5 @@ deps = { Sui = "Sui_1" }
 [pinned.testnet.migrate_fun_sui]
 source = { root = true }
 use_environment = "testnet"
-manifest_digest = "0BD0B84E37DC5C3451FC243FE3A1B056ADFB4208AF21328B2A1B965DC21E8E92"
+manifest_digest = "0EB0AD205228C44FBB486A4BC70FD7408C9192C9D8864DF69326B4427E43DF22"
 deps = { Sui = "Sui", flowx_clmm = "flowx_clmm" }
