@@ -1,16 +1,15 @@
 module migrate_fun_sui::migration {
-    use sui::object::{Self, UID};
-    use sui::tx_context::{Self, TxContext};
+
     use sui::coin::{Self, Coin, TreasuryCap};
     use sui::clock::{Clock};
-    use sui::transfer;
-    use sui::event; 
-    
+
+
+
     use migrate_fun_sui::vault::{Self, Vault};
     use migrate_fun_sui::snapshot;
     use migrate_fun_sui::events;
     use migrate_fun_sui::flowx_clmm_adapter;
-    use sui::sui::SUI;
+
 
     // --- Errors ---
     const ENotAdmin: u64 = 100;
@@ -18,9 +17,9 @@ module migrate_fun_sui::migration {
     const EMigrationEnded: u64 = 203;
     const EExceedsSnapshotQuota: u64 = 300;
     const EVaultNotLocked: u64 = 401;
-    const EMigrationNotEnded: u64 = 204;
+
     const EClaimsNotEnabled: u64 = 205;
-    
+
     // --- FlowX Dependencies ---
     use flowx_clmm::pool_manager::{PoolRegistry};
     use flowx_clmm::position_manager::{PositionRegistry};
@@ -35,10 +34,10 @@ module migrate_fun_sui::migration {
         snapshot_root: vector<u8>,
         finalized: bool,
         start_time: u64,
-        
+
         // Capabilities
         treasury_new: TreasuryCap<NewToken>,
-        treasury_receipt: TreasuryCap<Receipt> 
+        treasury_receipt: TreasuryCap<Receipt>
     }
 
     /// Tracks user migration state to prevent double-spending.
@@ -49,7 +48,7 @@ module migrate_fun_sui::migration {
 
     // --- Phase 1: Initialize ---
 
-    public entry fun initialize_migration<OldToken, NewToken, Receipt>(
+    public fun initialize_migration<OldToken, NewToken, Receipt>(
         treasury_new: TreasuryCap<NewToken>,
         treasury_receipt: TreasuryCap<Receipt>,
         total_old_supply: u64,
@@ -59,8 +58,8 @@ module migrate_fun_sui::migration {
         ctx: &mut TxContext
     ) {
         // Simple Ratio: scaled by 1e9
-        let ratio = (total_new_supply as u128) * 1_000_000_000 / (total_old_supply as u128); 
-        
+        let ratio = (total_new_supply as u128) * 1_000_000_000 / (total_old_supply as u128);
+
         let config = MigrationConfig<OldToken, NewToken, Receipt> {
             id: object::new(ctx),
             admin: tx_context::sender(ctx),
@@ -74,7 +73,7 @@ module migrate_fun_sui::migration {
 
         // Create the Vault immediately
         let vault = vault::create<OldToken>(ctx);
-        transfer::public_share_object(vault); 
+        transfer::public_share_object(vault);
 
         events::emit_migration_initialized(
             object::id(&config),
@@ -90,7 +89,7 @@ module migrate_fun_sui::migration {
     // --- Phase 2: Lock Liquidity (Admin) ---
     // (Unchanged logic, just updated signature with Receipt generic)
 
-    public entry fun lock_liquidity<OldToken, NewToken, Receipt>(
+    public fun lock_liquidity<OldToken, NewToken, Receipt>(
         config: &MigrationConfig<OldToken, NewToken, Receipt>,
         vault: &mut Vault<OldToken>,
         base_coins: Coin<sui::sui::SUI>,
@@ -114,19 +113,19 @@ module migrate_fun_sui::migration {
 
     // --- Phase 3: User Migrate (Deposit Old -> Get Receipt) ---
 
-    public entry fun migrate<OldToken, NewToken, Receipt>(
+    public fun migrate<OldToken, NewToken, Receipt>(
         config: &mut MigrationConfig<OldToken, NewToken, Receipt>,
         vault: &mut Vault<OldToken>,
         old_coins: Coin<OldToken>,
-        snapshot_quota: u64, 
+        snapshot_quota: u64,
         proof: vector<vector<u8>>,
         ctx: &mut TxContext
     ) {
         assert!(!config.finalized, EMigrationEnded);
-        
+
         let user = tx_context::sender(ctx);
         let amount = coin::value(&old_coins);
-        
+
         // 1. Verify Proof
         snapshot::verify_proof(config.snapshot_root, user, snapshot_quota, proof);
 
@@ -153,7 +152,7 @@ module migrate_fun_sui::migration {
         // Or should Receipt be 1:1 with New Token? user guide says "1:1 exchange (1 MFT = 1 new token)"
         // So we apply Ratio HERE.
         let receipt_amount = (((amount as u128) * (config.ratio as u128)) / 1_000_000_000) as u64;
-        
+
         let receipt_coins = coin::mint(&mut config.treasury_receipt, receipt_amount, ctx);
         transfer::public_transfer(receipt_coins, user);
 
@@ -167,16 +166,16 @@ module migrate_fun_sui::migration {
 
     // --- Phase 4: Finalize & Create Pool (Atomic: Liquidate Old -> Create New Pool) ---
 
-    public entry fun finalize_and_create_pool<OldToken, NewToken, Receipt>(
+    public fun finalize_and_create_pool<OldToken, NewToken, Receipt>(
         config: &mut MigrationConfig<OldToken, NewToken, Receipt>,
         vault: &mut Vault<OldToken>,
         pool_registry: &mut PoolRegistry,
-        pos_registry: &mut PositionRegistry, 
+        pos_registry: &mut PositionRegistry,
         versioned: &Versioned,
         clock: &Clock,
         old_pool_fee: u64, // Fee rate of OldToken/SUI pool
         min_sui_out: u64,  // Min SUI expected from liquidation
-        initial_price_x128: u128, 
+        initial_price_x128: u128,
         tick_lower: u32,
         tick_upper: u32,
         ctx: &mut TxContext
@@ -194,7 +193,7 @@ module migrate_fun_sui::migration {
 
         // 3. LIQUIDATE: Swap OldToken -> SUI
         let old_balance_val = coin::value(&old_coins);
-        
+
         // Note: Returns SUI only. Remainder OldToken is refunded to admin by FlowX Router.
         let mut sui_coins = flowx_clmm_adapter::swap_exact_input<OldToken, sui::sui::SUI>(
             pool_registry,
@@ -210,7 +209,7 @@ module migrate_fun_sui::migration {
         let base_balance = vault::withdraw_base(vault);
         let base_coins = coin::from_balance(base_balance, ctx);
         coin::join(&mut sui_coins, base_coins);
-        
+
         // 5. Mint NewTokens for Liquidity based on "Same Ratio"
         // Amount New = Amount Old Liquidated * Ratio
         let lp_token_amount = (((old_balance_val as u128) * (config.ratio as u128)) / 1_000_000_000) as u64;
@@ -220,7 +219,7 @@ module migrate_fun_sui::migration {
         flowx_clmm_adapter::create_pool<sui::sui::SUI, NewToken>(
             pool_registry,
             versioned,
-            3000, 
+            3000,
             initial_price_x128,
             clock,
             ctx
@@ -230,8 +229,8 @@ module migrate_fun_sui::migration {
             pos_registry,
             pool_registry,
             3000,
-            sui_coins, 
-            new_coins,  
+            sui_coins,
+            new_coins,
             tick_lower,
             tick_upper,
             versioned,
@@ -243,16 +242,16 @@ module migrate_fun_sui::migration {
     }
 
     // --- Phase 5: Claim (Burn MFT -> Get New) ---
-    
-    public entry fun claim<OldToken, NewToken, Receipt>(
+
+    public fun claim<OldToken, NewToken, Receipt>(
         config: &mut MigrationConfig<OldToken, NewToken, Receipt>,
         receipt: Coin<Receipt>,
         ctx: &mut TxContext
     ) {
         assert!(config.finalized, EClaimsNotEnabled);
-        
+
         let amount = coin::value(&receipt);
-        
+
         // 1. Burn Receipt
         coin::burn(&mut config.treasury_receipt, receipt);
 

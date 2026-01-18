@@ -1,9 +1,8 @@
 module migrate_fun_sui::flowx_clmm_adapter {
     use sui::coin::{Self, Coin};
     use sui::clock::{Clock};
-    use sui::tx_context::{Self, TxContext};
-    use sui::transfer;
-    
+
+
     // Import FlowX modules from the dependency
     use flowx_clmm::pool::{Self};
     use flowx_clmm::pool_manager::{Self, PoolRegistry};
@@ -56,7 +55,7 @@ module migrate_fun_sui::flowx_clmm_adapter {
             ctx
         );
     }
-    
+
     /// Add Liquidity to a pool.
     public fun add_liquidity<X, Y>(
         position_registry: &mut PositionRegistry,
@@ -70,9 +69,9 @@ module migrate_fun_sui::flowx_clmm_adapter {
         clock: &Clock,
         ctx: &mut TxContext
     ) {
-        let _amount_x = coin::value(&coin_x); 
+        let _amount_x = coin::value(&coin_x);
         let _amount_y = coin::value(&coin_y);
-        
+
         // Convert u32 ticks to I32.
         let lower = i32::from(tick_lower);
         let upper = i32::from(tick_upper);
@@ -111,7 +110,7 @@ module migrate_fun_sui::flowx_clmm_adapter {
     /// Note: Remainder Coin<X> is refunded to sender by FlowX Router.
     public fun swap_exact_input<X, Y>(
         pool_registry: &mut PoolRegistry,
-        fee_rate: u64, 
+        fee_rate: u64,
         coin_in: Coin<X>,
         amount_out_min: u64,
         versioned: &Versioned,

@@ -1,17 +1,17 @@
 module migrate_fun_sui::mft_token {
-    use sui::coin::{Self, TreasuryCap};
-    use sui::url;
+    use sui::coin;
+
 
     public struct MFT_TOKEN has drop {}
 
     fun init(witness: MFT_TOKEN, ctx: &mut TxContext) {
         let (treasury, metadata) = coin::create_currency(
-            witness, 
-            9, 
-            b"MFT", 
-            b"MigrateFun Receipt", 
-            b"Receipt token for migration claims", 
-            option::none(), 
+            witness,
+            9,
+            b"MFT",
+            b"MigrateFun Receipt",
+            b"Receipt token for migration claims",
+            option::none(),
             ctx
         );
         transfer::public_freeze_object(metadata);

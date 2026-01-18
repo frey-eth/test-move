@@ -5,37 +5,25 @@
 version = 4
 
 [pinned.testnet.MoveStdlib]
-source = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/move-stdlib", rev = "caeb21b13ef6e26cd8c5e48be520bcf0598d48c3" }
-use_environment = "testnet"
-manifest_digest = "C4FE4C91DE74CBF223B2E380AE40F592177D21870DC2D7EB6227D2D694E05363"
-deps = {}
-
-[pinned.testnet.MoveStdlib_1]
-source = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/move-stdlib", rev = "04dd28d5c5d92bff685ddfecb86f8acce18ce6df" }
+source = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/move-stdlib", rev = "8532f4611bd1ae744fcec105600df0df210dbb30" }
 use_environment = "testnet"
 manifest_digest = "C4FE4C91DE74CBF223B2E380AE40F592177D21870DC2D7EB6227D2D694E05363"
 deps = {}
 
 [pinned.testnet.Sui]
-source = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "caeb21b13ef6e26cd8c5e48be520bcf0598d48c3" }
+source = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "8532f4611bd1ae744fcec105600df0df210dbb30" }
 use_environment = "testnet"
 manifest_digest = "7AFB66695545775FBFBB2D3078ADFD084244D5002392E837FDE21D9EA1C6D01C"
 deps = { MoveStdlib = "MoveStdlib" }
 
-[pinned.testnet.Sui_1]
-source = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "04dd28d5c5d92bff685ddfecb86f8acce18ce6df" }
-use_environment = "testnet"
-manifest_digest = "7AFB66695545775FBFBB2D3078ADFD084244D5002392E837FDE21D9EA1C6D01C"
-deps = { MoveStdlib = "MoveStdlib_1" }
-
 [pinned.testnet.flowx_clmm]
-source = { local = "../flowx-clmm" }
+source = { git = "https://github.com/dawnn07/clmm-contracts.git", subdir = ".", rev = "4dac664f50733aea826ff7479abbbb6b032f5db9" }
 use_environment = "testnet"
-manifest_digest = "C2772B976EC6A56C32071C116C869B6B810C731713A3E79642606E99AE1F55DA"
-deps = { Sui = "Sui_1" }
+manifest_digest = "50E473B0F672EBE291E0F499B438B1BED79235AE0C812C71E0B3E7FB1FE7D2CC"
+deps = { Sui = "Sui" }
 
 [pinned.testnet.migrate_fun_sui]
 source = { root = true }
 use_environment = "testnet"
-manifest_digest = "0EB0AD205228C44FBB486A4BC70FD7408C9192C9D8864DF69326B4427E43DF22"
+manifest_digest = "CB7113A9C6827278AE6AF63587FE4D7187330531F9DC32B26D5E5141998A28C0"
 deps = { Sui = "Sui", flowx_clmm = "flowx_clmm" }

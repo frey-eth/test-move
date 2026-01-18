@@ -1,7 +1,7 @@
 module migrate_fun_sui::snapshot {
-    use std::vector;
+
     use sui::address;
-    
+
     const EInvalidProof: u64 = 302;
 
     /// Verifies that a (user, amount) pair is part of the Merkle Tree defined by `root`.
@@ -21,12 +21,12 @@ module migrate_fun_sui::snapshot {
     /// Made public(package) for testing if needed, but internal logic uses it.
     public(package) fun hash_leaf(user: address, amount: u64): vector<u8> {
         let user_bytes = address::to_bytes(user);
-        let amount_bytes = u64_to_bytes(amount); 
-        
+        let amount_bytes = u64_to_bytes(amount);
+
         let mut payload = vector::empty<u8>();
         vector::append(&mut payload, user_bytes);
         vector::append(&mut payload, amount_bytes);
-        
+
         std::hash::sha3_256(payload)
     }
 
@@ -35,7 +35,7 @@ module migrate_fun_sui::snapshot {
         let mut current_hash = leaf;
         let mut i = 0;
         let len = vector::length(&proof);
-        
+
         while (i < len) {
             let sibling = *vector::borrow(&proof, i);
             current_hash = hash_pair(current_hash, sibling);
