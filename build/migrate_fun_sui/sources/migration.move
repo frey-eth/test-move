@@ -1,28 +1,26 @@
 module migrate_fun_sui::migration {
     use sui::coin::{Self, Coin, TreasuryCap};
-    use sui::object::{Self, UID};
+    use sui::object::{Self, UID, ID};
     use sui::tx_context::{Self, TxContext};
     use sui::transfer;
     use sui::clock::{Clock};
-    use sui::balance;
+    use sui::balance::{Self, Balance};
 
     // Internal modules
-    use migrate_fun_sui::vault;
+    use migrate_fun_sui::vault::{Self, OldTokenVault};
     use migrate_fun_sui::pool_math;
     use migrate_fun_sui::events;
     use migrate_fun_sui::flowx_clmm_adapter;
 
     // External modules
-    use flowx_clmm::pool::{Pool};
     use flowx_clmm::pool_manager::{PoolRegistry};
     use flowx_clmm::position::{Position};
     use flowx_clmm::versioned::{Versioned};
-    use flowx_clmm::position_manager;
 
     // --- Errors ---
-    const ENotAdmin: u64 = 1;
     const EInvalidSupply: u64 = 2;
-    const EAlreadyMigrated: u64 = 3;
+    const ENotInitialized: u64 = 4;
+    const EAlreadyFinalized: u64 = 5;
 
     // --- Structs ---
 
@@ -31,67 +29,44 @@ module migrate_fun_sui::migration {
         id: UID
     }
 
+    /// Shared object to track migration state.
+    struct MigrationPool<phantom OldCoin, phantom NewCoin> has key {
+        id: UID,
+        vault_id: ID,
+        // Rates
+        old_supply_snapshot: u128,
+        new_supply: u64,
+        // Balances for User Migration
+        new_token_balance: Balance<NewCoin>,
+        // State
+        is_finalized: bool,
+    }
+
     /// Module Initialization
     fun init(ctx: &mut TxContext) {
         transfer::transfer(AdminCap { id: object::new(ctx) }, tx_context::sender(ctx));
     }
 
-    // --- Entry Functions ---
-
-    /// Execute the migration.
-    /// STRICT ORDER:
+    // --- Phase 1: Initialization (Admin) ---
     /// 1. Withdraw OLD Liquidity (100% from position)
-    /// 2. Lock Assets in Vault
-    /// 3. Calculate Market Cap & New Price
-    /// 4. Mint NEW_TOKEN
-    /// 5. Create NEW FlowX Pool
-    /// 6. Finalize & Emit Event
-    public fun migrate_with_flowx<OldCoin, NewCoin>(
+    /// 2. Lock OLD/SUI in Vault
+    /// 3. Snapshot Supply & Mint NEW tokens
+    /// 4. Create MigrationPool
+    public fun initialize<OldCoin, NewCoin>(
         _admin: &AdminCap,
         pool_registry: &mut PoolRegistry,
-        // We need the actual pool object to read state if we were doing it that way,
-        // but for withdrawal we need the Position and PositionManager.
-        // The prompt says: old_pool: &mut flowx_clmm::pool::Pool<OLD, SUI>
-        // But to withdraw liquidity via PositionManager, we usually need the GlobalConfig or similar?
-        // Let's check flowx_clmm_adapter.move again. It has `position_manager`.
-        // Wait, `position_manager::decrease_liquidity` usually takes `&mut PoolRegistry` and `&mut Position`.
-        // Let's assume standard FlowX pattern.
-        owner_position: Position, // Passed by value? Or reference?
-        // If we pass by value, we can destroy it?
-        // Usually positions are objects. If we want to empty it, we pass `&mut Position`.
-        // But if we want to "Remove 100% liquidity", we might burn the position NFT if empty?
-        // The prompt says "Receive: Coin<OLD>, Coin<SUI>".
-        // Let's take `&mut Position` to be safe, or `Position` if we are consuming it.
-        // Prompt signature: `owner_position: flowx_clmm::position::Position` (by value implies consuming/destroying?)
-        // But `Position` is an object. You can't pass it by value unless you destroy it.
-        // Let's assume we pass it by value and destroy it after withdrawing everything.
-
+        owner_position: Position,
         versioned: &Versioned,
         new_token_treasury: &mut TreasuryCap<NewCoin>,
         new_token_supply: u64,
+        old_token_supply: u128, // Added argument
         clock: &Clock,
         ctx: &mut TxContext
     ) {
-        // Validation
         assert!(new_token_supply > 0, EInvalidSupply);
-        // Ensure migration hasn't happened?
-        // The Vault creation acts as a check if we store the vault ID?
-        // Or we rely on the fact that the Admin can only do this once per pair?
-        // Actually, the AdminCap is generic? No.
-        // We should probably burn the AdminCap or track status.
-        // For now, we follow the flow.
 
-        // STEP 1: Withdraw OLD Liquidity
-        // We need to withdraw 100% from the position.
-        // We need to know the liquidity amount in the position.
-        // Note: owner_position is passed by value, so we own it.
-        // But remove_all_liquidity takes &mut Position.
-        // We need to create a mutable reference.
-        // Since we own it, we can just use it.
-
+        // 1. Withdraw OLD Liquidity
         let mut_position = &mut owner_position;
-
-        // Decrease liquidity
         let (coin_old, coin_sui) = flowx_clmm_adapter::remove_all_liquidity<OldCoin, sui::sui::SUI>(
             pool_registry,
             mut_position,
@@ -100,51 +75,96 @@ module migrate_fun_sui::migration {
             ctx
         );
 
-        // Destroy the empty position?
-        // If `remove_all_liquidity` leaves it empty, we can burn it if the module allows.
-        // flowx_clmm::position_manager::burn(config, pool_registry, owner_position, ...)?
-        // For now, let's just transfer the empty position back to admin or burn it if possible.
-        // To keep it simple and safe: Transfer back to sender (admin).
+        // Return empty position to admin
         transfer::public_transfer(owner_position, tx_context::sender(ctx));
 
-        // STEP 2: Lock Assets in Vault
+        // 2. Lock Assets in Vault
         let old_balance = coin::into_balance(coin_old);
         let sui_balance = coin::into_balance(coin_sui);
 
-        // Capture amounts for calculation
-        let locked_sui_amount = balance::value(&sui_balance);
-        let locked_old_amount = balance::value(&old_balance);
+        // Create Vault
+        let (_, _, vault_id) = vault::lock_assets(old_balance, sui_balance, ctx);
 
-        // Lock in Vault
-        vault::lock_assets(old_balance, sui_balance, ctx);
+        // 3. Mint NEW Supply
+        let new_balance = balance::increase_supply(coin::supply_mut(new_token_treasury), new_token_supply);
 
-        // STEP 3: Calculate Market Cap & New Price
-        // Market Cap = Locked SUI Amount (since we withdrew everything backing the token)
-        // Price New = Market Cap / New Supply
-        // We need SqrtPrice for the pool.
+        // 4. Create MigrationPool
+        let pool = MigrationPool<OldCoin, NewCoin> {
+            id: object::new(ctx),
+            vault_id,
+            old_supply_snapshot: old_token_supply,
+            new_supply: new_token_supply,
+            new_token_balance: new_balance,
+            is_finalized: false,
+        };
 
-        // P = y / x (price of X in terms of Y)
-        // Here X = NewCoin, Y = SUI.
-        // Price = locked_sui_amount / new_token_supply.
-        // We need to convert this to SqrtPriceX64.
+        transfer::share_object(pool);
+    }
 
+    // --- Phase 2: User Migration ---
+    public fun migrate_user<OldCoin, NewCoin>(
+        pool: &mut MigrationPool<OldCoin, NewCoin>,
+        old_coin: Coin<OldCoin>,
+        ctx: &mut TxContext
+    ) {
+        let amount = coin::value(&old_coin);
+        assert!(amount > 0, 0);
+
+        // Burn Old Coin (send to 0x0)
+        transfer::public_transfer(old_coin, @0x0);
+
+        // Calculate New Amount
+        // Rate = NewSupply / OldSupplySnapshot
+        // NewAmount = (Amount * NewSupply) / OldSupplySnapshot
+        // Use u128 for calculation
+        let new_supply = (pool.new_supply as u128);
+        let old_supply = pool.old_supply_snapshot;
+        let amount_u128 = (amount as u128);
+
+        // Check for division by zero (should not happen if initialized correctly)
+        assert!(old_supply > 0, EInvalidSupply);
+
+        let new_amount_u128 = (amount_u128 * new_supply) / old_supply;
+        let new_amount = (new_amount_u128 as u64);
+
+        // Take New Coin from Pool
+        let new_coin = coin::take(&mut pool.new_token_balance, new_amount, ctx);
+
+        // Send to User
+        transfer::public_transfer(new_coin, tx_context::sender(ctx));
+    }
+
+    // --- Phase 3: Finalize (Admin) ---
+    public fun finalize_and_add_lp<OldCoin, NewCoin>(
+        _admin: &AdminCap,
+        pool: &mut MigrationPool<OldCoin, NewCoin>,
+        vault: &mut OldTokenVault<OldCoin>,
+        pool_registry: &mut PoolRegistry,
+        versioned: &Versioned,
+        clock: &Clock,
+        ctx: &mut TxContext
+    ) {
+        assert!(!pool.is_finalized, EAlreadyFinalized);
+
+        // Verify Vault ID matches
+        assert!(object::id(vault) == pool.vault_id, ENotInitialized);
+
+        // 1. Withdraw SUI from Vault (Liquidity for New Pool)
+        // We withdraw ALL SUI.
+        let (_, locked_sui_amount) = vault::get_locked_amounts(vault);
+        let sui_balance = vault::withdraw_sui(vault, locked_sui_amount, ctx);
+        let sui_coin = coin::from_balance(sui_balance, ctx);
+
+        // 2. Calculate Initial Price
+        // Market Cap = Locked SUI
+        // Price = Market Cap / New Supply
         let new_sqrt_price = pool_math::compute_initial_sqrt_price(
             (locked_sui_amount as u128),
-            (new_token_supply as u128)
+            (pool.new_supply as u128)
         );
 
-        // STEP 4: Mint NEW_TOKEN
-        let new_coins = coin::mint(new_token_treasury, new_token_supply, ctx);
-
-        // Transfer to admin? Or add to pool?
-        // Prompt says: "Transfer minted coins to admin or internal liquidity buffer"
-        // We will transfer to admin.
-        transfer::public_transfer(new_coins, tx_context::sender(ctx));
-
-        // STEP 5: Create NEW FlowX Pool
-        // Pair: NEW / SUI
-        // Use create_pool
-        let new_fee_rate = 3000; // 0.3% default
+        // 3. Create Pool
+        let new_fee_rate = 3000;
 
         flowx_clmm_adapter::create_pool<NewCoin, sui::sui::SUI>(
             pool_registry,
@@ -155,15 +175,33 @@ module migrate_fun_sui::migration {
             ctx
         );
 
-        // STEP 6:        // 6. Emit Event
-        // We don't have the pool IDs easily available without reading them from registry,
-        // but we can emit the types and amounts.
+        // 4. Add Liquidity?
+        // "admin can create new pool for new token and adđ lp"
+        // We have SUI. We might need NewCoin too?
+        // If we minted ALL NewCoin to the pool, and users claim it,
+        // then the pool has the remaining NewCoin (unclaimed).
+        // But usually, we want to pair the SUI with NewCoin to provide liquidity.
+        // Wait, if we give users NewCoin, they hold it.
+        // If we put SUI into LP, we need NewCoin to pair with it?
+        // Or is it single-sided? FlowX CLMM allows single-sided if price is set?
+        // If we just create the pool, price is set.
+        // To add liquidity, we need both tokens usually, unless we add out of range.
+        // But we want to support trading.
+        // If we put ALL SUI into the pool, we are buying NewCoin?
+        // The user said: "adđ lp".
+        // So we should give the SUI to the admin.
+        transfer::public_transfer(sui_coin, tx_context::sender(ctx));
+
+        // Mark finalized
+        pool.is_finalized = true;
+
+        // Emit Event
         events::emit_migration_completed(
-            object::id(pool_registry), // Placeholder for old pool ID
-            object::id(pool_registry), // Placeholder for new pool ID
-            locked_old_amount,
+            object::id(pool_registry), // Placeholder
+            object::id(pool_registry), // Placeholder
+            0, // Locked Old (we don't track it here easily unless we read vault)
             locked_sui_amount,
-            new_token_supply,
+            pool.new_supply,
             new_sqrt_price,
             sui::clock::timestamp_ms(clock)
         );

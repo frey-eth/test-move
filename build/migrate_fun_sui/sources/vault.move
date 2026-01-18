@@ -25,7 +25,7 @@ module migrate_fun_sui::vault {
         old_balance: Balance<OldCoin>,
         sui_balance: Balance<sui::sui::SUI>,
         ctx: &mut TxContext
-    ): (u64, u64) {
+    ): (u64, u64, object::ID) {
         let old_amount = sui::balance::value(&old_balance);
         let sui_amount = sui::balance::value(&sui_balance);
 
@@ -35,6 +35,8 @@ module migrate_fun_sui::vault {
             locked_sui: sui_balance,
         };
 
+        let vault_id = object::id(&vault);
+
         // Make it a shared object so it's visible but immutable (no mutable functions exposed publically)
         // Actually, since there are no public functions to mutate it, even if shared, it's safe.
         // Or we can just freeze it?
@@ -43,7 +45,25 @@ module migrate_fun_sui::vault {
         // Let's share it to be safe and visible.
         transfer::share_object(vault);
 
-        (old_amount, sui_amount)
+        (old_amount, sui_amount, vault_id)
+    }
+
+    // --- Withdraw Functions (Friend Only) ---
+
+    public(friend) fun withdraw_sui<OldCoin>(
+        vault: &mut OldTokenVault<OldCoin>,
+        amount: u64,
+        ctx: &mut TxContext
+    ): Balance<sui::sui::SUI> {
+        sui::balance::split(&mut vault.locked_sui, amount)
+    }
+
+    public(friend) fun withdraw_old<OldCoin>(
+        vault: &mut OldTokenVault<OldCoin>,
+        amount: u64,
+        ctx: &mut TxContext
+    ): Balance<OldCoin> {
+        sui::balance::split(&mut vault.locked_old, amount)
     }
 
     // --- Getters ---
